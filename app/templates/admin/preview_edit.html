@@ -1,0 +1,63 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+<section class="content-header">
+    <h1>微电影管理系统</h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 预告管理</a></li>
+        <li class="active">编辑预告</li>
+    </ol>
+</section>
+<section class="content" id="showcontent">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">编辑预告</h3>
+                </div>
+                <form role="form" method="post" enctype="multipart/form-data">
+                    {% for msg in get_flashed_messages(category_filter=["err"]) %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i> 操作失败 </h4>
+                        {{ msg }}
+                    </div>
+                    {% endfor %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="input_title">{{ form.title.label }}</label>
+                            {{ form.title(value=preview.title) }}
+                            {% for err in form.title.errors %}
+                            <div class="col-md-12" style="color: red">{{ err }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <label for="input_logo">{{ form.logo.label }}</label>
+                            {{ form.logo }}
+                            {% for err in form.logo.errors %}
+                            <div class="col-md-12" style="color: red">{{ err }}</div>
+                            {% endfor %}
+                            <img src="{{ url_for('static', filename='uploads/'+preview.logo) }}" style="margin-top:5px;"
+                                 class="img-responsive" alt="">
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        {{ form.csrf_token }}
+                        {{ form.submit }}
+                        <a class="btn btn-default" style="margin-left:10px;color: #367fa9"
+                           href="{{ url_for('admin.preview_list', page=page) }}">取消</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $("#g-4").addClass("active");
+    });
+</script>
+{% endblock %}
